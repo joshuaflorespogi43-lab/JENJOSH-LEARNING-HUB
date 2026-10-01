@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JENJOSH Learning Hub</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#fff7d6,#e9f8ff,#f7eaff);color:#263238}button{border:0;border-radius:18px;padding:13px 20px;font-weight:800;cursor:pointer;box-shadow:0 5px 0 #0002}button:active{transform:translateY(3px);box-shadow:0 2px 0 #0002}.wrap{max-width:1100px;margin:auto;padding:20px}.hero{background:linear-gradient(135deg,#6c63ff,#ff6fb5);color:white;border-radius:30px;padding:28px;text-align:center;box-shadow:0 12px 30px #0002}.hero h1{font-size:clamp(30px,6vw,58px);margin:5px}.hero p{font-size:18px}.nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0}.nav button{background:white;color:#4b45a3}.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 8px 24px #0001}.card h2{margin-top:0}.emoji{font-size:52px}.topic{background:#f3f0ff;border-radius:18px;padding:15px;margin:10px 0}.quizbox{max-width:760px;margin:auto}.option{display:block;width:100%;margin:10px 0;background:#f5f7fb;text-align:left}.option:hover{background:#e8e5ff}.correct{background:#c9f7d5!important}.wrong{background:#ffd0d0!important}.bar{height:16px;background:#ddd;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#ffd84d,#ff72b6);transition:.4s}.feedback{font-size:18px;font-weight:800;min-height:28px}.badge{font-size:70px;text-align:center}.small{color:#607d8b}.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}.match button{text-align:center;background:#fff0b8}.flash{font-size:22px;text-align:center;min-height:140px;display:flex;align-items:center;justify-content:center;background:#eef7ff;border-radius:22px;padding:20px}.footer{text-align:center;padding:25px;color:#607d8b}@media(max-width:600px){.wrap{padding:12px}.hero{padding:22px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero"><div class="emoji">🌈📚🎮</div><h1>JENJOSH LEARNING HUB</h1><p>Learn • Play • Challenge • Earn Stars!</p></section>
+<div class="nav"><button onclick="show('home')">🏠 Home</button><button onclick="show('learn')">📖 Learn</button><button onclick="show('quiz')">🧠 Quiz</button><button onclick="show('challenge')">⚡ Challenge</button><button onclick="show('progress')">🏆 Progress</button></div>
+<section id="home" class="page active"><div class="grid">
+<div class="card"><div class="emoji">📖</div><h2>Learn Zone</h2><p>Explore short, easy lessons about Fundamental Movements.</p><button onclick="show('learn')">START LEARNING</button></div>
+<div class="card"><div class="emoji">🧠</div><h2>Quiz Challenge</h2><p>Answer questions, earn points, and get instant feedback.</p><button onclick="show('quiz')">PLAY QUIZ</button></div>
+<div class="card"><div class="emoji">⚡</div><h2>Quick Challenge</h2><p>Test how fast you can identify movement examples.</p><button onclick="show('challenge')">LET'S GO!</button></div>
+<div class="card"><div class="emoji">🏆</div><h2>My Progress</h2><p>See your score, stars, and learner badge.</p><button onclick="show('progress')">VIEW PROGRESS</button></div>
+</div></section>
+<section id="learn" class="page"><div class="card"><h2>📖 Learn Zone: Fundamental Movements</h2><p><b>Fundamental movements</b> are basic body movements that help us perform many physical activities.</p><div class="topic"><h3>🚶 Locomotor Movements</h3><p>These movements move the body from one place to another.</p><b>Examples:</b> walking, running, jumping, hopping, skipping, galloping.</div><div class="topic"><h3>🧍 Non-Locomotor Movements</h3><p>These movements are done while staying in one place.</p><b>Examples:</b> bending, stretching, twisting, turning, swaying.</div><button onclick="flash()">💡 SHOW ME A QUICK TIP</button><p id="tip" class="feedback"></p></div></section>
+<section id="quiz" class="page"><div class="card quizbox"><h2>🧠 Quiz Challenge</h2><div class="bar"><div id="fill" class="fill"></div></div><p id="qnum"></p><h2 id="question"></h2><div id="options"></div><p id="feedback" class="feedback"></p><button id="next" onclick="nextQ()" style="display:none">NEXT ➜</button></div></section>
+<section id="challenge" class="page"><div class="card quizbox"><h2>⚡ Movement Detective</h2><p>Click the correct category for each movement!</p><div id="challengeBox"></div><p id="challengeScore" class="feedback"></p></div></section>
+<section id="progress" class="page"><div class="card"><h2>🏆 My Progress</h2><div class="badge" id="badge">🌱</div><h2 style="text-align:center" id="badgeText">Beginner Learner</h2><p style="text-align:center">Score: <b id="scoreShow">0</b> points</p><p style="text-align:center">Stars: <b id="starsShow">0</b> ⭐</p><div class="bar"><div id="progressFill" class="fill"></div></div><br><button onclick="resetAll()">🔄 Reset Progress</button></div></section>
+<div class="footer">Made for fun learning 💜 JENJOSH</div>
+</div>
+<script>
+let score=0,stars=0,qi=0;
+const qs=[
+['Which movement moves your body from one place to another?',['Locomotor','Non-locomotor','Balance'],0],
+['Which is a locomotor movement?',['Bending','Running','Twisting'],1],
+['Which is a non-locomotor movement?',['Jumping','Running','Bending'],2],
+['You are standing in one place and twisting your body. What is it?',['Locomotor','Non-locomotor','Running'],1],
+['Which activity uses fundamental movements?',['Playing active games','Sleeping only','Sitting still'],0]
+];
+function show(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='quiz')loadQ();if(id==='challenge')loadChallenge();update();}
+function loadQ(){let q=qs[qi];document.getElementById('qnum').textContent='Question '+(qi+1)+' of '+qs.length;document.getElementById('question').textContent=q[0];document.getElementById('feedback').textContent='';document.getElementById('next').style.display='none';let o=document.getElementById('options');o.innerHTML='';q[1].forEach((a,i)=>{let b=document.createElement('button');b.className='option';b.textContent=String.fromCharCode(65+i)+'. '+a;b.onclick=()=>answer(i,b);o.appendChild(b)});document.getElementById('fill').style.width=(qi/qs.length*100)+'%'}
+function answer(i,b){document.querySelectorAll('.option').forEach(x=>x.disabled=true);let q=qs[qi];if(i===q[2]){b.classList.add('correct');score+=10;stars++;document.getElementById('feedback').textContent='🎉 Correct! Great job! +10 points';}else{b.classList.add('wrong');document.getElementById('feedback').textContent='💡 Not quite. Keep learning and try again!';}document.getElementById('next').style.display='inline-block';update()}
+function nextQ(){qi++;if(qi>=qs.length){document.getElementById('question').textContent='🎊 Quiz Complete!';document.getElementById('options').innerHTML='<h2>You finished the quiz!</h2>';document.getElementById('feedback').textContent='Your score: '+score+' points ⭐';document.getElementById('next').style.display='none';document.getElementById('fill').style.width='100%';update();return}loadQ()}
+const ch=[['Walking','Locomotor'],['Bending','Non-locomotor'],['Jumping','Locomotor'],['Twisting','Non-locomotor']];let ci=0,cs=0;
+function loadChallenge(){ci=0;cs=0;drawChallenge()}
+function drawChallenge(){let box=document.getElementById('challengeBox');if(ci>=ch.length){box.innerHTML='<h2>🎊 Challenge Complete!</h2>';document.getElementById('challengeScore').textContent='You got '+cs+' / '+ch.length+' correct!';score+=cs*5;stars+=cs;update();return}let [m,c]=ch[ci];box.innerHTML='<div class="flash"><b>'+m+'</b></div><div class="match"><button onclick="pick(\'Locomotor\')">🚶 Locomotor</button><button onclick="pick(\'Non-locomotor\')">🧍 Non-locomotor</button></div>';document.getElementById('challengeScore').textContent='Round '+(ci+1)+' of '+ch.length}
+function pick(x){if(x===ch[ci][1]){cs++;document.getElementById('challengeScore').textContent='✅ Correct!';}else document.getElementById('challengeScore').textContent='💡 Try to remember the lesson!';ci++;setTimeout(drawChallenge,450)}
+function flash(){document.getElementById('tip').textContent='⭐ Tip: If the body travels to a new place, think LOCOMOTOR! If you stay in place, think NON-LOCOMOTOR.'}
+function update(){document.getElementById('scoreShow').textContent=score;document.getElementById('starsShow').textContent=stars;let p=Math.min(100,score);document.getElementById('progressFill').style.width=p+'%';let badge='🌱',text='Beginner Learner';if(score>=20){badge='⭐';text='Super Learner'}if(score>=50){badge='🏆';text='Learning Champion'}document.getElementById('badge').textContent=badge;document.getElementById('badgeText').textContent=text}
+function resetAll(){score=0;stars=0;qi=0;update();show('home')}
+update();
+</script></body></html>
